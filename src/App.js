@@ -1,37 +1,21 @@
-//import React from "react";
-//import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import "./App.css";
-import FoodOrderBusinessPanel from "./FoodOrderBusinessPanel";
-// import Chat from "./Chat";
-// import Dashboard from "./Dashboard";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './LandingPage';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
+import FoodOrderBusinessPanel from './FoodOrderBusinessPanel';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <FoodOrderBusinessPanel />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/panel" element={<FoodOrderBusinessPanel />} />
+      </Routes>
+    </Router>
   );
-  // return (
-  //   <Router>
-  //     <div className="App">
-  //       <nav>
-  //         <ul>
-  //           <li>
-  //             <Link to="/">Chat</Link>
-  //           </li>
-  //           <li>
-  //             <Link to="/dashboard">Dashboard</Link>
-  //           </li>
-  //         </ul>
-  //       </nav>
-
-  //       <Routes>
-  //         <Route path="/" element={<Chat />} />
-  //         <Route path="/dashboard" element={<Dashboard />} />
-  //       </Routes>
-  //     </div>
-  //   </Router>
-  // );
-}
+};
 
 export default App;

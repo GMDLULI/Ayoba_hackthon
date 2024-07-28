@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ethers } from 'ethers';
 
 const menuItems = [
   { id: 1, name: 'Classic Kota', price: 25 },
@@ -22,8 +23,28 @@ const FoodOrderBusinessPanel = () => {
     address: null
   });
   const [userInput, setUserInput] = useState('');
+  const [storedResponses, setStoredResponses] = useState({});
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImE1YjkzN2Y5YmRlMjJlNTgzZTZmYjNhY2M2NTM2NWZiYTBjNzhlYmMiLCJqaWQiOiJhNWI5MzdmOWJkZTIyZTU4M2U2ZmIzYWNjNjUzNjVmYmEwYzc4ZWJjQGF5b2JhLm1lIiwiZ3JvdXAiOiJidXNpbmVzcyIsIm1zaXNkbiI6bnVsbCwiaWF0IjoxNzIyMTMxMDE4LCJleHAiOjE3MjIxMzI4MTh9.8WftfKxyuVXBp-aZe4dFTKSQ3mlMxswFI6rYOmAsbFY';
+
+  // Smart contract address (replace with your actual deployed contract address)
+  const contractAddress = '0x1234567890123456789012345678901234567890';
+  const contractABI = [
+    {
+      "inputs": [{"internalType": "bool", "name": "_choice", "type": "bool"}],
+      "name": "setChoice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getChoice",
+      "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
 
   const fetchOrders = async () => {
     const url = 'https://api.ayoba.me/v1/business/message';
@@ -144,11 +165,19 @@ const FoodOrderBusinessPanel = () => {
     const currentStep = conversationSteps[phoneNumber] || 'welcome';
     const { response, nextStep } = (stepHandlers[currentStep] || stepHandlers.default)(phoneNumber, userInput);
     setConversationSteps(prev => ({ ...prev, [phoneNumber]: nextStep }));
+    setStoredResponses(prev => ({
+      ...prev,
+      [phoneNumber]: [...(prev[phoneNumber] || []), { userInput, response }]
+    }));
     sendMessage(phoneNumber, response);
   };
 
-  const startAIOrder = (phoneNumber) => {
-    handleAIResponse(phoneNumber, 'hi');
+  const startAIOrder = async (phoneNumber) => {
+    if (!storedResponses[phoneNumber]) {
+      await sendSmartContractMessage(phoneNumber);
+    } else {
+      handleAIResponse(phoneNumber, 'hi');
+    }
     setUnprocessedMessages(prev => prev.filter(msg => msg.msisdn !== phoneNumber));
     setOrders(prev => [...prev, {
       phoneNumber,
@@ -171,6 +200,30 @@ const FoodOrderBusinessPanel = () => {
 
     const order = updatedOrders[index];
     await sendMessage(order.phoneNumber, "Your order is ready for pickup/delivery!");
+  };
+
+  const sendSmartContractMessage = async (phoneNumber) => {
+    const message = "Welcome! Do you agree to our terms and conditions?\n1. Yes\n2. No";
+    await sendMessage(phoneNumber, message);
+  };
+
+  const handleSmartContractResponse = async (phoneNumber, response) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    try {
+      const choice = response.toLowerCase() === '1' || response.toLowerCase() === 'yes';
+      await contract.setChoice(choice);
+      
+      if (choice) {
+        handleAIResponse(phoneNumber, 'hi');
+      } else {
+        sendMessage(phoneNumber, "We're sorry you don't agree. If you change your mind, please contact us again.");
+      }
+    } catch (error) {
+      console.error('Error interacting with smart contract:', error);
+    }
   };
 
   useEffect(() => {
