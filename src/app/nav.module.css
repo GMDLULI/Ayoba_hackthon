@@ -1,0 +1,23 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  background-color: rgba(var(--card-rgb), 0.1);
+  padding: 1rem;
+  border-bottom: 1px solid rgba(var(--card-border-rgb), 0.15);
+}
+
+.navLink {
+  margin: 0 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: rgba(var(--card-rgb), 0.2);
+}
+
+.active {
+  background-color: rgba(var(--card-rgb), 0.3);
+  font-weight: bold;
+}
