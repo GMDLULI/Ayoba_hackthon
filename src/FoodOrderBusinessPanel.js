@@ -25,9 +25,8 @@ const FoodOrderBusinessPanel = () => {
   const [userInput, setUserInput] = useState('');
   const [storedResponses, setStoredResponses] = useState({});
 
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImE1YjkzN2Y5YmRlMjJlNTgzZTZmYjNhY2M2NTM2NWZiYTBjNzhlYmMiLCJqaWQiOiJhNWI5MzdmOWJkZTIyZTU4M2U2ZmIzYWNjNjUzNjVmYmEwYzc4ZWJjQGF5b2JhLm1lIiwiZ3JvdXAiOiJidXNpbmVzcyIsIm1zaXNkbiI6bnVsbCwiaWF0IjoxNzIyMTMxMDE4LCJleHAiOjE3MjIxMzI4MTh9.8WftfKxyuVXBp-aZe4dFTKSQ3mlMxswFI6rYOmAsbFY';
+  const token = 'your_token_here';
 
-  // Smart contract address (replace with your actual deployed contract address)
   const contractAddress = '0x1234567890123456789012345678901234567890';
   const contractABI = [
     {
@@ -234,14 +233,14 @@ const FoodOrderBusinessPanel = () => {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Food Order Business Panel</h1>
-      <ul>
+      <ul style={styles.orderList}>
         {orders.map((item, index) => (
           <li key={index} style={styles.orderItem}>
             <p>Phone: {item.phoneNumber}</p>
             <p>Order: {item.orderDetails}</p>
             <p>Status: {item.status}</p>
             {!item.isReady && (
-              <button onClick={() => markOrderReady(index)}>
+              <button style={styles.button} onClick={() => markOrderReady(index)}>
                 Mark as Ready
               </button>
             )}
@@ -262,7 +261,7 @@ const FoodOrderBusinessPanel = () => {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Enter message"
         />
-        <button onClick={() => sendMessage(phoneNumber, message)}>
+        <button style={styles.button} onClick={() => sendMessage(phoneNumber, message)}>
           Send Message
         </button>
       </div>
@@ -272,30 +271,55 @@ const FoodOrderBusinessPanel = () => {
 
 const styles = {
   container: {
-    padding: 10,
+    fontFamily: 'AyobaFont, Arial, sans-serif',
+    backgroundColor: '#F9F9F9',
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
   },
   title: {
-    fontSize: 20,
+    fontSize: '24px',
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333333',
+    marginBottom: '20px'
+  },
+  orderList: {
+    listStyleType: 'none',
+    padding: '0',
+    margin: '0'
   },
   orderItem: {
-    marginBottom: 10,
-    padding: 10,
-    border: '1px solid #ccc',
+    backgroundColor: '#FFFFFF',
+    padding: '15px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    marginBottom: '15px'
+  },
+  button: {
+    backgroundColor: '#007bff',
+    color: '#FFFFFF',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '16px'
   },
   messageSection: {
-    marginTop: 20,
+    marginTop: '30px'
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: '20px',
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333333',
+    marginBottom: '10px'
   },
   input: {
-    border: '1px solid #ccc',
-    padding: 10,
-    marginBottom: 10,
+    width: '100%',
+    padding: '10px',
+    marginBottom: '10px',
+    borderRadius: '5px',
+    border: '1px solid #CCCCCC',
+    fontSize: '16px'
   }
 };
 
