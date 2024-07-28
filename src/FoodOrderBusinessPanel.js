@@ -204,6 +204,9 @@ const FoodOrderBusinessPanel = () => {
   const sendSmartContractMessage = async (phoneNumber) => {
     const message = "Welcome! Do you agree to our terms and conditions?\n1. Yes\n2. No";
     await sendMessage(phoneNumber, message);
+    if (handleSmartContractResponse(phoneNumber,message)){
+      handleAIResponse(phoneNumber,'welcome');
+    }
   };
 
   const handleSmartContractResponse = async (phoneNumber, response) => {
@@ -275,7 +278,10 @@ const styles = {
     backgroundColor: '#F9F9F9',
     padding: '20px',
     borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    maxWidth: '600px',
+    margin: '0 auto',
+    textAlign: 'center'
   },
   title: {
     fontSize: '24px',
@@ -314,7 +320,7 @@ const styles = {
     marginBottom: '10px'
   },
   input: {
-    width: '100%',
+    width: '80%',
     padding: '10px',
     marginBottom: '10px',
     borderRadius: '5px',

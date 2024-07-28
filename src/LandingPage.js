@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import logo from './assets/images/ayoba-logo-white-center.png'; // Adjust the path as needed
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -28,7 +29,8 @@ const LoginPage = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Login</h1>
+      <img src={logo} alt="Ayoba Logo" style={styles.logo} />
+      <h1 style={styles.welcomeMessage}>Welcome to Ayoba Food Ordering System</h1>
       <form onSubmit={handleLogin} style={styles.form}>
         <input
           type="text"
@@ -62,15 +64,20 @@ const styles = {
     justifyContent: 'center',
     height: '100vh',
     textAlign: 'center',
-    backgroundColor: '#F0F0F0', // Light background for contrast
-    fontFamily: 'Arial, sans-serif', // Default font, can be changed to Ayoba's specific font if available
+    backgroundColor: '#ffffff',
   },
-  title: {
-    color: '#0078FF', // Ayoba blue color
-    fontSize: '2em',
+  logo: {
+    width: '150px',
+    marginBottom: '20px',
+  },
+  welcomeMessage: {
+    fontSize: '24px',
+    color: '#002f6c', // Ayoba blue
+    fontFamily: 'Arial, sans-serif',
     marginBottom: '20px',
   },
   form: {
+    width: '300px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -79,33 +86,33 @@ const styles = {
     margin: '10px',
     padding: '10px',
     fontSize: '16px',
-    width: '200px',
-    border: '1px solid #0078FF', // Ayoba blue border
+    border: '1px solid #002f6c', // Ayoba blue
     borderRadius: '5px',
+    width: '100%',
   },
   button: {
     margin: '10px',
     padding: '10px 20px',
     fontSize: '16px',
-    backgroundColor: '#0078FF', // Ayoba blue background
-    color: 'white',
+    backgroundColor: '#002f6c', // Ayoba blue
+    color: '#ffffff', // White font
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
   },
   message: {
-    color: '#FF0000', // Red color for error messages
+    color: 'red',
+    marginTop: '10px',
   },
   homeButton: {
     marginTop: '20px',
     padding: '10px 20px',
     fontSize: '16px',
     textDecoration: 'none',
-    color: 'white',
-    backgroundColor: '#0078FF', // Ayoba blue background
+    color: '#ffffff', // White font
     border: 'none',
     borderRadius: '5px',
-    cursor: 'pointer',
+    backgroundColor: '#002f6c', // Ayoba blue
   },
 };
 
